@@ -12,13 +12,9 @@ public class EventTyp {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
-    private String name;
-
     private String beschreibung;
 
-    private Integer raumNr;
 
-    private Date datumErstellung;
 
     public Integer getId() {
         return id;
@@ -26,14 +22,6 @@ public class EventTyp {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getBeschreibung() {
@@ -44,21 +32,6 @@ public class EventTyp {
         this.beschreibung = beschreibung;
     }
 
-    public Integer getRaumNr() {
-        return raumNr;
-    }
-
-    public void setRaumNr(Integer raumNr) {
-        this.raumNr = raumNr;
-    }
-
-    public Date getDatumErstellung() {
-        return datumErstellung;
-    }
-
-    public void setDatumErstellung(Date datumErstellung) {
-        this.datumErstellung = datumErstellung;
-    }
 
 
 }
