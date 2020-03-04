@@ -1,4 +1,4 @@
-package com.example.DeviceDetection;
+package com.DeviceDetection;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
