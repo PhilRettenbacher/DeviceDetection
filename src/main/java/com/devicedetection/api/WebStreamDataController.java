@@ -21,12 +21,12 @@ import com.devicedetection.services.WebStreamDataService;
 public class WebStreamDataController {
  
 	@Autowired
-	private WebStreamDataService webStreamDataService;
+	private WebStreamDataService webStreamData;
  
 	@RequestMapping(path="/show")
 	public String springMVC(ModelMap modelMap) {
-		List<List<Map<Object, Object>>> data = webStreamDataService.getWebStreamData();
-		modelMap.addAttribute("dataPointsList", data);
+		List<List<Map<Object, Object>>> canvasjsDataList = webStreamData.getWebStreamData();
+		modelMap.addAttribute("dataPointsList", canvasjsDataList);
 		return "diagram";
 	}
  

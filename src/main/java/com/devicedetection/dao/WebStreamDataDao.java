@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.devicedetection.model.CanvasjsChartData;
+import com.devicedetection.model.ConsumptionData;
 import com.devicedetection.model.WebStreamData;
 
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class WebStreamDataDao {
  
 	public List<Integer> getStreamData() {
-		return WebStreamData.getWebStreamData();
+		return ConsumptionData.getConsumptionData();
 	}
  
 }  

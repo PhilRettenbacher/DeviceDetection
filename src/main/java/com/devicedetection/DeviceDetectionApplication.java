@@ -1,5 +1,6 @@
 package com.devicedetection;
 
+import com.devicedetection.model.ConsumptionData;
 import com.devicedetection.model.WebStreamData;
 
 import org.springframework.boot.SpringApplication;
@@ -10,7 +11,7 @@ public class DeviceDetectionApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DeviceDetectionApplication.class, args);
-		WebStreamData.GetInstance();
+		ConsumptionData.initialize();
 	}
 
 }
