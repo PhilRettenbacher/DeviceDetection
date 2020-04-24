@@ -7,20 +7,23 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ConsumptionData
 {
-    static String urlText = "http://80.120.42.246:82/androidapi/api/verbrauch";
-    static List<Integer> consumptionData = new ArrayList<Integer>();
+    static String urlText = "http://80.120.42.246:82/androidapi/api/gesamtverbrauch";
+    static List<ConsumptionPointTime> consumptionData = new ArrayList<ConsumptionPointTime>();
     static RequestThread request;
-	public static List<Integer> getConsumptionData() {
+	public static List<ConsumptionPointTime> getConsumptionData() {
 		return consumptionData;
     }
-    
+    public static String[] delimiters = new String[] {"wertGesamt", "wertTheorie", "wertWerkstatt"};
     
     public static void initialize()
     {
@@ -31,8 +34,10 @@ public class ConsumptionData
 class RequestThread extends Thread
 {
     String urlText;
-    String regex = "tagesVerbrauch\":\"\\d+";
-    RequestThread (String urlText)
+    //String regex = "tagesVerbrauch\":\"\\d+";
+    
+    String timeDelimiter = "time";
+    RequestThread (final String urlText)
     {
         this.urlText = urlText;
     }
@@ -47,23 +52,38 @@ class RequestThread extends Thread
 
             while(true)
             {
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                final HttpURLConnection con = (HttpURLConnection) url.openConnection();
                 con.setRequestMethod("GET");
-                int status = con.getResponseCode();
+                final int status = con.getResponseCode();
 
-                BufferedReader in = new BufferedReader(
+                final BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
                 String inputLine;
-                StringBuffer content = new StringBuffer();
+                final StringBuffer content = new StringBuffer();
                 while ((inputLine = in.readLine()) != null) {
                     content.append(inputLine);
                 }   
                 in.close();
-                System.out.println(content.toString());
+                //System.out.println(content.toString());
                 
-                String message = content.toString();
-
-                Pattern r = Pattern.compile(regex);
+                final String message = content.toString();
+                
+                final String[] split = message.split("\\},\\{");
+                List<ConsumptionPointTime> data = new ArrayList<ConsumptionPointTime>(split.length);
+                for(int i = 0; i<split.length;i++)
+                {
+                    //System.out.println(s);
+                    final int[] vals = new int[ConsumptionData.delimiters.length];
+                    for(int j = 0; j<ConsumptionData.delimiters.length;j++)
+                    {
+                        vals[j] = ExtractValue(split[i], ConsumptionData.delimiters[j]);
+                    }
+                    Date time = ExtractTime(split[i], timeDelimiter);
+                    data.add(new ConsumptionPointTime(vals, time));
+                }
+                System.out.println("Lines: " + split.length);
+                ConsumptionData.consumptionData = data;
+                /*Pattern r = Pattern.compile(regex);
                 Matcher m = r.matcher(message);
                 if(m.find())
                 {
@@ -74,18 +94,58 @@ class RequestThread extends Thread
                     int val = Integer.parseInt(str);
                     System.out.println(val);
                     ConsumptionData.consumptionData.add(val);
-                }
+                }*/
 
                 con.disconnect();
-                sleep(100);
+                sleep(60*1000*5);
             }
         }   
-        catch (IOException e) {
+        catch (final IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
 			// TODO Auto-generated catch block
             return;
 		}
+    }
+    Date ExtractTime(final String text, final String delimiter)
+    {
+        final String regx = delimiter + "\":\"\\d+.\\d+.\\d+ \\d+:\\d+:\\d+";
+        final Pattern r = Pattern.compile(regx);
+        final Matcher m = r.matcher(text);
+        if(m.find())
+        {
+            final int start = m.start()+delimiter.length()+3;
+            final int end = m.end();
+                    
+            final String str = text.substring(start, end);
+            //System.out.println(val);
+            try {
+				return DateFormat.getDateTimeInstance().parse(str);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        return null;
+    }
+    int ExtractValue(final String text, final String delimiter)
+    {
+        final String regx = delimiter + "\":\"\\d+";
+        final Pattern r = Pattern.compile(regx);
+        final Matcher m = r.matcher(text);
+
+        if(m.find())
+        {
+            
+            final int start = m.start()+delimiter.length()+3;
+            final int end = m.end();
+                    
+            final String str = text.substring(start, end);
+            final int val = Integer.parseInt(str);
+            //System.out.println(val);
+            return val;
+        }
+        return -1;
     }
 }

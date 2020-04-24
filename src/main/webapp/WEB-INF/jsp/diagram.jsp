@@ -4,12 +4,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Geräteerkennung</title>
+<title>Gerï¿½teerkennung</title>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script type="text/javascript">
 window.onload = function() {
-	
-var dataPoints = [];
+
+<%! int i = 0;%>
+<%! int j = 0;%>
+<c:forEach items="${names}" var="name" varStatus="loop">	
+var name<%=i%> = "${name}";
+<%i++;%>
+</c:forEach>
+<%i=0;%>
+<c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">	
+var dataPoints<%=i%> = [];
+<%i++;%>
+</c:forEach>
+<%i=0;%>
 var chart = new CanvasJS.Chart("chartContainer", {
 	theme: "dark2", // "light1", "dark1", "dark2"
 	
@@ -17,38 +28,58 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		text: "Energieverbrauch"
 	},
 	axisX: {
-		title: "Zeit",
-		suffix: " s"
+		valueFormatString: "DD.MMM.YYYY HH:mm"
 	},
 	axisY: {
 		title: "Energieverbrauch",
 		includeZero: false,
 		valueFormatString: "#,##0.0",
-		suffix: " Â°C"
+		suffix: " W"
 	},
-	data: [{
+	toolTip: {
+		shared: true
+	},
+	legend: {
+		cursor: "pointer",
+		verticalAlign: "top",
+		horizontalAlign: "center",
+		dockInsidePlotArea: true,
+	},
+	data: [
+		<%j=0;%>
+		<c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
+		<%j++;%>
+		</c:forEach>
+		<c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
+		{
 		type: "line",
-		xValueFormatString: "After #,##0 s",
-		yValueFormatString: "#,##0.0 Â°C",
-		dataPoints: dataPoints
-	}]
+		name: name<%=i%>,
+		showInLegend: true,
+		yValueFormatString: "#,##0.0 W",
+		dataPoints: dataPoints<%=i%>
+		<%i++;%>
+		}<%=i<j?",":""%>
+		</c:forEach>
+	]
 });
  
 var yValue;
 var xValue;
 var updateInterval = 2000;
- 
+<%i=0;%>
 <c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
 	<c:forEach items="${dataPoints}" var="dataPoint">
 		yValue = parseFloat("${dataPoint.y}");
-		xValue = parseInt("${dataPoint.x}");
-		dataPoints.push({
+		xValue = new Date(${dataPoint.x.getTime()});
+		dataPoints<%=i%>.push({
 			x : xValue,
 			y : yValue,
 		});
+		
 	</c:forEach>
+	<%i++;%>
 </c:forEach>
- 
+<%i=0;%>
 chart.render();
 
  
@@ -65,29 +96,29 @@ chart.render();
 			
 			
 			<select id="filterGebaeude">
-				<option value="">Gebäude auswählen</option>
-				<option value="werkstatt">Werkstätte</option>
-				<option value="gebaude">Theoriegebäude</option>
+				<option value="">Gebï¿½ude auswï¿½hlen</option>
+				<option value="werkstatt">Werkstï¿½tte</option>
+				<option value="gebaude">Theoriegebï¿½ude</option>
 			</select>
 			<select id="filterGeraete">
-				<option value="">Geräte auswählen</option>
+				<option value="">Gerï¿½te auswï¿½hlen</option>
 				<option value="heizung">Heizung</option>
 				<option value="drehmaschine">Drehmaschine</option>
-				<option value="fraesmaschine">Fräsmaschine</option>
+				<option value="fraesmaschine">Frï¿½smaschine</option>
 				<option value="klimaanlage">Klimaanlage</option>
 			</select>
 			<select id="filterStatus">
-				<option value="">Status auswählen</option>
+				<option value="">Status auswï¿½hlen</option>
 				<option value="status-on">Ein</option>
 				<option value="status-off">Aus</option>
 				<option value="status-save">Energiespar</option>
 			</select>
 			
-			<div class="geräteliste" >
+			<div class="gerï¿½teliste" >
 			<table class="content-daten" border="3">
 			  <tr>
-				<th> Gebäude</th>
-				<th> Gerätbezeichnung</th>
+				<th> Gebï¿½ude</th>
+				<th> Gerï¿½tbezeichnung</th>
 				<th> Verbrauch</th>
 				<th> Leistung</th>
 				<th> Status</th>
@@ -139,12 +170,12 @@ chart.render();
 		
 		
 		<div class="textbox-container">	
-		<h1 style="text-align:center;"> Geräte ändern</h1>
+		<h1 style="text-align:center;"> Gerï¿½te ï¿½ndern</h1>
 		<h4 style="text-align:left; color:white;">Bezeichnung</h4>
 		<div class="textbox2">
 			<input type="text" name="bezeichnung" />
 		</div>
-		<h4 style="text-align:left; color:white;">Gebäude</h4>
+		<h4 style="text-align:left; color:white;">Gebï¿½ude</h4>
 		<div class="textbox">
 			<input type="text" name="gerbaude" />
 		</div>

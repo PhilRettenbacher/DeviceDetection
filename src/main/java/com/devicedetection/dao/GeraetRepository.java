@@ -1,5 +1,7 @@
 package com.devicedetection.dao;
 
+import java.util.List;
+
 import com.devicedetection.model.Geraet;
 import org.springframework.data.repository.CrudRepository;
 
@@ -7,5 +9,5 @@ import org.springframework.data.repository.CrudRepository;
 // CRUD refers Create, Read, Update, Delete
 
 public interface GeraetRepository extends CrudRepository<Geraet, Integer> {
-
+    
 }

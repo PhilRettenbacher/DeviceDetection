@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 
 @Controller // This means that this class is a Controller
@@ -17,15 +17,14 @@ public class GeraetEventController {
   private GeraetEventRepository geraetEventRepository;
 
   @PostMapping(path="/add") // Map ONLY POST Requests
-  public @ResponseBody String addNewGeraetEvent (@RequestParam Date datum
+  public @ResponseBody String addNewGeraetEvent (@RequestParam Timestamp datum
       , Integer geraetesignatur_id, Integer eventtyp_id){
     // @ResponseBody means the returned String is the response, not a view name
     // @RequestParam means it is a parameter from the GET or POST request
 
     GeraetEvent n = new GeraetEvent();
     n.setDatum(datum);
-    n.setGeraetesignatur_id(geraetesignatur_id);
-    n.setEventTyp_id(eventtyp_id);
+    
     geraetEventRepository.save(n);
     return "Saved";
   }

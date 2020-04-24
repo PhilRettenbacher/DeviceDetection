@@ -1,10 +1,15 @@
 package com.devicedetection.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 import java.sql.Date;
+import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class Geraet {
@@ -18,7 +23,24 @@ public class Geraet {
 
     private Integer raumNr;
 
-    private Date datumErstellung;
+    private Integer verbrauch;
+
+    @OneToMany(mappedBy = "geraet", fetch = FetchType.LAZY,
+    cascade = CascadeType.ALL)
+    private Set<GeraetEvent> events;
+
+
+    public Geraet()
+    {
+
+    }
+    public Geraet(String name, String beschreibung, Integer raumNr, Integer verbrauch)
+    {
+        this.name = name;
+        this.beschreibung = beschreibung;
+        this.raumNr = raumNr;
+        this.verbrauch = verbrauch;
+    }
 
     public Integer getId() {
         return id;
@@ -52,12 +74,12 @@ public class Geraet {
         this.raumNr = raumNr;
     }
 
-    public Date getDatumErstellung() {
-        return datumErstellung;
+    public Integer getVerbrauch() {
+        return verbrauch;
     }
 
-    public void setDatumErstellung(Date datumErstellung) {
-        this.datumErstellung = datumErstellung;
+    public void setVerbrauch(Integer verbrauch) {
+        this.verbrauch = verbrauch;
     }
 
 

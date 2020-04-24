@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.devicedetection.model.CanvasjsChartData;
 import com.devicedetection.model.ConsumptionData;
+import com.devicedetection.model.ConsumptionPointTime;
+import com.devicedetection.model.FullConsumptionData;
 import com.devicedetection.model.WebStreamData;
 
 import org.springframework.stereotype.Component;
@@ -14,8 +16,8 @@ import org.springframework.stereotype.Service;
 @Repository("webStreamDataDao")
 public class WebStreamDataDao {
  
-	public List<Integer> getStreamData() {
-		return ConsumptionData.getConsumptionData();
+	public FullConsumptionData getStreamData() {
+		return new FullConsumptionData(ConsumptionData.getConsumptionData(), ConsumptionData.delimiters);
 	}
  
 }  

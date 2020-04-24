@@ -19,8 +19,7 @@ public class GeraetController {
   @PostMapping(path="/add") // Map ONLY POST Requests
   public @ResponseBody String addNewGeraet (@RequestParam String name
       , @RequestParam String beschreibung
-      , @RequestParam Integer raumNr
-      , @RequestParam Date datumErstellung) {
+      , @RequestParam Integer raumNr) {
     // @ResponseBody means the returned String is the response, not a view name
     // @RequestParam means it is a parameter from the GET or POST request
 
@@ -28,7 +27,6 @@ public class GeraetController {
     n.setName(name);
     n.setBeschreibung(beschreibung);
     n.setRaumNr(raumNr);
-    n.setDatumErstellung(datumErstellung);
     geraetRepository.save(n);
     return "Saved";
   }

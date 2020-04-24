@@ -1,10 +1,14 @@
 package com.devicedetection.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.sql.Date;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import java.sql.Timestamp;
 
 @Entity // This tells Hibernate to make a table out of this class
 public class GeraetEvent {
@@ -12,11 +16,24 @@ public class GeraetEvent {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
-    private Date datum;
+    private Timestamp datum;
 
-    private Integer geraetesignatur_id;
+    private boolean eventTyp;
 
-    private Integer eventTyp_id;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "geraet_id", nullable = false)
+    private Geraet geraet;
+
+    public GeraetEvent()
+    {
+
+    }
+    public GeraetEvent(Timestamp datum, Boolean eventTyp, Geraet geraet)
+    {
+        this.datum = datum;
+        this.eventTyp = eventTyp;
+        this.geraet = geraet;
+    }
 
 
     public Integer getId() {
@@ -28,30 +45,30 @@ public class GeraetEvent {
     }
 
 
-    public Date getDatum() {
+    public Timestamp getDatum() {
         return datum;
     }
 
-    public void setDatum(Date datum) {
+    public void setDatum(Timestamp datum) {
         this.datum = datum;
     }
 
 
-    public Integer getGeraetesignatur_id() {
-        return geraetesignatur_id;
+    public Boolean getEventTyp() {
+        return eventTyp;
     }
 
-    public void setGeraetesignatur_id(Integer geraetesignatur_id) {
-        this.geraetesignatur_id = geraetesignatur_id;
+    public void setEventTyp(boolean eventTyp) {
+        this.eventTyp = eventTyp;
     }
 
-
-    public Integer getEventTyp_id() {
-        return eventTyp_id;
+    public Geraet getGeraet()
+    {
+        return geraet;
     }
-
-    public void setEventTyp_id(Integer eventTyp_id) {
-        this.eventTyp_id = eventTyp_id;
+    public void setGeraet(Geraet geraet)
+    {
+        this.geraet = geraet;
     }
 
 }

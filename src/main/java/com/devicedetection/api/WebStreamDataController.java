@@ -1,5 +1,6 @@
 package com.devicedetection.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +26,10 @@ public class WebStreamDataController {
  
 	@RequestMapping(path="/show")
 	public String springMVC(ModelMap modelMap) {
-		List<List<Map<Object, Object>>> canvasjsDataList = webStreamData.getWebStreamData();
+		List<String> names = new ArrayList<String>();
+		List<List<Map<Object, Object>>> canvasjsDataList = webStreamData.getWebStreamData(names);
 		modelMap.addAttribute("dataPointsList", canvasjsDataList);
+		modelMap.addAttribute("names", names);
 		return "diagram";
 	}
  
