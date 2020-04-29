@@ -32,5 +32,50 @@ public class WebStreamDataController {
 		modelMap.addAttribute("names", names);
 		return "diagram";
 	}
+	
+	@RequestMapping(path="/show/1")
+	public String springMVC1(ModelMap modelMap) {
+		List<String> names = new ArrayList<String>();
+		List<List<Map<Object, Object>>> canvasjsDataList = webStreamData.getWebStreamData(names);
+		modelMap.addAttribute("dataPointsList", canvasjsDataList);
+		modelMap.addAttribute("names", names);
+		return "diagram1";
+	}
+	
+	@RequestMapping(path="/show/2")
+	public String springMVC2(ModelMap modelMap) {
+		List<String> names = new ArrayList<String>();
+		List<List<Map<Object, Object>>> canvasjsDataList = webStreamData.getWebStreamData(names);
+		modelMap.addAttribute("dataPointsList", canvasjsDataList);
+		modelMap.addAttribute("names", names);
+		return "diagram2";
+	}
+	
+	@RequestMapping(path="/show/3")
+	public String springMVC3(ModelMap modelMap) {
+		List<String> names = new ArrayList<String>();
+		List<List<Map<Object, Object>>> canvasjsDataList = webStreamData.getWebStreamData(names);
+		modelMap.addAttribute("dataPointsList", canvasjsDataList);
+		modelMap.addAttribute("names", names);
+		return "diagram3";
+	}
+	
+	@RequestMapping(path="/show/4")
+	public String springMVC4(ModelMap modelMap) {
+		List<String> names = new ArrayList<String>();
+		List<List<Map<Object, Object>>> canvasjsDataList = webStreamData.getWebStreamData(names);
+		modelMap.addAttribute("dataPointsList", canvasjsDataList);
+		modelMap.addAttribute("names", names);
+		return "diagram4";
+	}
+	
+	@RequestMapping(path="/show/5")
+	public String springMVC5(ModelMap modelMap) {
+		List<String> names = new ArrayList<String>();
+		List<List<Map<Object, Object>>> canvasjsDataList = webStreamData.getWebStreamData(names);
+		modelMap.addAttribute("dataPointsList", canvasjsDataList);
+		modelMap.addAttribute("names", names);
+		return "diagram5";
+	}
  
 }       

@@ -46,20 +46,13 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		dockInsidePlotArea: true,
 	},
 	data: [
-		<%j=0;%>
-		<c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
-		<%j++;%>
-		</c:forEach>
-		<c:forEach items="${dataPointsList}" var="dataPoints" varStatus="loop">
 		{
 		type: "line",
-		name: name<%=i%>,
+		name: name0,
 		showInLegend: true,
 		yValueFormatString: "#,##0.0 W",
-		dataPoints: dataPoints<%=i%>
-		<%i++;%>
-		}<%=i<j?",":""%>
-		</c:forEach>
+		dataPoints: dataPoints0
+		}
 	]
 });
  
